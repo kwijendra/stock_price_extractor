@@ -4,7 +4,9 @@ import requests
 
 def fetch_alpha_vantage_data(symbol: str):
     api_key = os.getenv("ALPHA_VANTAGE_KEY")
-    
+    if not api_key:
+        raise ValueError("ALPHA_VANTAGE_KEY environment variable is required")
+
     url = f"https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol={symbol}&apikey={api_key}"
     response = requests.get(url)
     data = response.json()

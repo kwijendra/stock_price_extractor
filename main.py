@@ -19,7 +19,10 @@ def get_annual_data(symbol: str, year: str):
 
     # Fetch from external API if data is not available locally
     if not rows:
-        external_data = fetch_alpha_vantage_data(symbol)
+        try:
+            external_data = fetch_alpha_vantage_data(symbol)
+        except ValueError as exc:
+            raise HTTPException(status_code=500, detail=str(exc))
 
         # Filter for the requested year and insert into local database
         for date, metrics in external_data.items():
@@ -32,6 +35,9 @@ def get_annual_data(symbol: str, year: str):
 
         # Query back from local database after insertion
         rows = read_annual_data_from_db(symbol, year, conn)
+
+    if not rows:
+        raise HTTPException(status_code=404, detail="Data not found")
 
     # Aggregate to get max high, min low, and sum of volume
     res = conn.execute('''
