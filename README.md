@@ -7,7 +7,7 @@ This project provides a FastAPI-based service to fetch financial data using the 
 'git clone https://github.com/kwijendra/stock_price_extractor.git'
 
 ### Create a Virtual Environment
-'python -m venv test_env'
+'python -m venv venv'
 
 ### Activate the Virtual Environment
 '.\venv\Scripts\Activate'
